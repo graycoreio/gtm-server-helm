@@ -1,9 +1,5 @@
 # Default values for gtm-server.
 
-replicaCount: 3
-
-previewServerUrl: ""
-
 image:
   repository: gcr.io/cloud-tagging-10302018/gtm-cloud-image
   pullPolicy: IfNotPresent
@@ -14,6 +10,30 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
+sst:
+  replicaCount: 3
+  ingress:
+    enabled: false
+    className: ""
+    annotations: {}
+    hosts: []
+    tls: []
+  service:
+    type: ClusterIP
+    port: 8080
+
+preview: 
+  serverUrl: ""
+  ingress:
+    enabled: false
+    className: ""
+    annotations: {}
+    hosts: []
+    tls: []
+  service:
+    type: ClusterIP
+    port: 8080
+
 extraEnv: []
 
 podAnnotations: {}
@@ -22,16 +42,6 @@ podSecurityContext: {}
 
 securityContext: {}
 
-service:
-  type: ClusterIP
-  port: 8080
-
-ingress:
-  enabled: false
-  className: ""
-  annotations: {}
-  hosts: []
-  tls: []
 resources: {}
 
 nodeSelector: {}

@@ -5,7 +5,7 @@ metadata:
   labels:
     {{- include "gtm-server.labels" . | nindent 4 }}
 spec:
-  replicas: {{ .Values.replicaCount }}
+  replicas: {{ .Values.sst.replicaCount }}
   selector:
     matchLabels:
       {{- include "gtm-server.selectorLabels" . | nindent 6 }}
@@ -32,7 +32,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
           - name: PREVIEW_SERVER_URL 
-            value: "{{ required "A previewServerUrl is required!" .Values.previewServerUrl }}"
+            value: "{{ required "A previewServerUrl is required!" .Values.preview.serverUrl }}"
           {{- with .Values.extraEnv }}
           {{- toYaml . | nindent 10 }}
           {{- end }}
@@ -40,6 +40,10 @@ spec:
             - name: http
               containerPort: 8080
               protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
